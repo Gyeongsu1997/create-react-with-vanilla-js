@@ -11,7 +11,6 @@ const _updateAttributes = function(oldNode, newNode) {
 		oldNode.removeAttribute(name);
 	  }
 	}
-	oldNode.internalInstanceKey = newNode.internalInstanceKey;
 };
 
 const _updateElement = function(parent, newNode, oldNode) {
@@ -52,15 +51,10 @@ const _diff = function(oldNode, newNode) {
 };
 
 const _setAttributes = function($el, props) {
-	$el.internalInstanceKey = generateRandomId();
 	Object.entries(props || {})
 		.filter(([ value ]) => value)
 		.forEach(([ attr, value ]) => {
-			if (attr.startsWith('on')) {
-				_setEvent(attr.slice(2).toLowerCase(), $el.internalInstanceKey, value);
-			} else {
-				$el.setAttribute(attr, value);
-			}
+			$el.setAttribute(attr, value);
 		});
 };
 
@@ -71,6 +65,7 @@ const _createElement = function(node) {
 	if (typeof node === 'string' || typeof node === 'number') {
 	  	return document.createTextNode(node);
 	}
+	// 이 부분이 핵심입니다. node의 type이 함수라면 props와 children을 인자로 해서 함수를 호출합니다.  
 	if (typeof node.type === 'function') {
 		return _createElement(node.type({ ...node.props, children: node.children }));
 	}
