@@ -1,5 +1,5 @@
 /** @jsx h */
-import styled from "./StyledComponents.js";
+import styled from "../StyledComponents.js";
 
 function h(type, props, ...children) {
 	return { type, props, children: children.flat() };

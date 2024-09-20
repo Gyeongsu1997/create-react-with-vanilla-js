@@ -13,7 +13,7 @@ const _createElement = function(node) {
 	if (typeof node === 'string' || typeof node === 'number') {
 	  	return document.createTextNode(node);
 	}
-	// 이 부분이 핵심입니다. node의 type이 함수라면 props와 children을 인자로 해당 함수를 호출합니다.  
+	// 이 부분이 핵심입니다. node의 type이 함수라면 props와 children이 담긴 객체를 인자로 하여 해당 함수를 호출합니다.  
 	if (typeof node.type === 'function') {
 		return _createElement(node.type({ ...node.props, children: node.children }));
 	}
