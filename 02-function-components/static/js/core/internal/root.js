@@ -5,7 +5,11 @@ const _render = () => {
   if (!$root || !rootComponent) {
     return;
   }
-  $root.appendChild(_createElement(rootComponent));
+  const $el = _createElement(rootComponent);
+  if ($el === null) {
+    return;
+  }
+  $root.appendChild($el);
 };
 const _setRoot = root => {
   $root = root;

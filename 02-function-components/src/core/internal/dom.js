@@ -19,7 +19,7 @@ const _createElement = function(node) {
 	}
 	const $el = document.createElement(node.type);
 	_setAttributes($el, node.props);
-	node.children.map(_createElement).filter(Boolean).forEach(child => $el.appendChild(child));
+	node.children.map(_createElement).forEach(child => Boolean(child) && $el.appendChild(child));
 
 	return $el;
 };
