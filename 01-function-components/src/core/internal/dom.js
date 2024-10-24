@@ -1,5 +1,5 @@
 const _setAttributes = function($el, props) {
-	Object.entries(props || {})
+	Object.entries(props)
 		.filter(([ attr, value ]) => value)
 		.forEach(([ attr, value ]) => {
 			$el.setAttribute(attr, value);

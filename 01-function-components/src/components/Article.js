@@ -1,7 +1,7 @@
 /** @jsx React.createElement */
 import React from "../core/react.js";
 
-function Article({ title, author, content}) {
+function Article({ title, author, content }) {
 	return (
 		<article>
 			<div>
