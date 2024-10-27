@@ -2,7 +2,7 @@ import { _getCurrentState, _getCurrentStateKey, _increaseStateKey, _setCurrentSt
 import { _render } from "./internal/root.js";
 
 const useState = function(initialState) {
-	const storeId = _getCurrentStateKey();
+	const stateKey = _getCurrentStateKey();
 	_setCurrentState(initialState);
 	const state = _getCurrentState();
 	const setState = (newState) => {
@@ -12,7 +12,7 @@ const useState = function(initialState) {
 		if (JSON.stringify(newState) === JSON.stringify(state)) {
 			return;
 		}
-		_setState(storeId, newState);
+		_setState(stateKey, newState);
 		_render();
 	};
 	_increaseStateKey();
