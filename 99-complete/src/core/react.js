@@ -1,8 +1,8 @@
-import { _increaseStoreId, _getCurrentState, _getStoreId, _setState, _setCurrentState, _createStore } from "./internal/store.js";
+import { _getCurrentState, _getCurrentStateKey, _increaseStateKey, _setCurrentState, _setState, _createStore } from "./internal/store.js";
 import { _render } from "./internal/root.js";
 
 const useState = function(initialState) {
-	const storeId = _getStoreId();
+	const storeId = _getCurrentStateKey();
 	_setCurrentState(initialState);
 	const state = _getCurrentState();
 	const setState = (newState) => {
@@ -15,7 +15,7 @@ const useState = function(initialState) {
 		_setState(storeId, newState);
 		_render();
 	};
-	_increaseStoreId();
+	_increaseStateKey();
 	return [ state, setState ];
 };
 
@@ -23,12 +23,12 @@ const useReducer = function(reducer, initialState) {
 	_setCurrentState(_createStore(reducer, initialState));
 	const state = _getCurrentState();
 	state.subscribe(_render);
-	_increaseStoreId();
+	_increaseStateKey();
 	return [state.getState(), state.dispatch];
 };
 
 const useEffect = function(callback, dependencies) {
-	const storeId = _getStoreId();
+	const storeId = _getCurrentStateKey();
 	const oldDependencies = _getCurrentState();
 
 	let hasChanged = true;
@@ -44,7 +44,7 @@ const useEffect = function(callback, dependencies) {
 		callback();
 		_setState(storeId, dependencies);
 	}
-	_increaseStoreId();
+	_increaseStateKey();
 };
 
 const React = {

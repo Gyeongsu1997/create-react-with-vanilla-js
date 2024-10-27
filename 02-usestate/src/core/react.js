@@ -1,8 +1,8 @@
-import { _increaseStoreId, _getCurrentState, _getStoreId, _setState, _setCurrentState } from "./internal/store.js";
+import { _getCurrentState, _getCurrentStateKey, _increaseStateKey, _setCurrentState, _setState } from "./internal/store.js";
 import { _render } from "./internal/root.js";
 
 const useState = function(initialState) {
-	const storeId = _getStoreId();
+	const storeId = _getCurrentStateKey();
 	_setCurrentState(initialState);
 	const state = _getCurrentState();
 	const setState = (newState) => {
@@ -15,9 +15,10 @@ const useState = function(initialState) {
 		_setState(storeId, newState);
 		_render();
 	};
-	_increaseStoreId();
+	_increaseStateKey();
 	return [ state, setState ];
 };
+
 
 const React = {
 	createElement: function(type, props, ...children) {

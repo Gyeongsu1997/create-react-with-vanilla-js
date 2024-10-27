@@ -1,13 +1,13 @@
 /** @jsx React.createElement */
 import React, { useState } from "./react.js";
-import { _resetStore } from "./internal/store.js";
+import { _resetStates } from "./internal/store.js";
 
 let path = null;
 let changePath = null;
 
 function BrowserRouter({ children }) {
 	if (path !== window.location.pathname) {
-		_resetStore();
+		_resetStates();
 	}
 	path = window.location.pathname;
 	const [_, setPath] = useState(path);

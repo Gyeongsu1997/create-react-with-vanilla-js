@@ -1,5 +1,5 @@
 import { debounceFrame } from "./utils.js";
-import { _resetStoreId } from "./store.js";
+import { _resetStateKey } from "./store.js";
 import { _createElement } from "./dom.js"
 
 let $root = null;
@@ -16,7 +16,7 @@ const _render = () => {
 	}
 	$root.parentNode.replaceChild($newRoot, $root);
 	$root = $newRoot;
-	_resetStoreId();
+	_resetStateKey();
 };
 
 const _setRoot = (root) => {

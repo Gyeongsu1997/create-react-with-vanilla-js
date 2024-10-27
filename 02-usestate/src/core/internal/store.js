@@ -1,34 +1,34 @@
-let store = [];
-let storeId = 0;
+let states = [];
+let currentStateKey = 0;
 
 export const _getCurrentState = () => {
-	return store[storeId];
+	return states[currentStateKey];
 };
 
-export const _getStoreId = () => {
-	return storeId;
+export const _getCurrentStateKey = () => {
+	return currentStateKey;
 };
 
-export const _increaseStoreId = () => {
-	storeId++;
+export const _increaseStateKey = () => {
+	currentStateKey++;
 };
 
-export const _resetStore = () => {
-	store = [];
-	storeId = 0;
+export const _resetStates = () => {
+	states = [];
+	currentStateKey = 0;
 };
 
-export const _resetStoreId = () => {
-	storeId = 0;
+export const _resetStateKey = () => {
+	currentStateKey = 0;
 };
 
 export const _setCurrentState = (state) => {
-	if (storeId < store.length) {
+	if (currentStateKey < states.length) {
 		return;
 	}
-	store.push(state);
+	states.push(state);
 };
 
-export const _setState = (storeId, state) => {
-	store[storeId] = state;
+export const _setState = (stateKey, state) => {
+	states[stateKey] = state;
 };

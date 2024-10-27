@@ -1,5 +1,5 @@
 import { debounceFrame } from "./utils.js";
-import { _resetStoreId } from "./store.js";
+import { _resetStateKey } from "./store.js";
 import { _createElement, _diff } from "./dom.js"
 
 let $root = null;
@@ -51,7 +51,7 @@ const _render = debounceFrame(() => {
 	$newRoot.appendChild($el);
 	_diff($root, $newRoot);
 	_addEventListeners();
-	_resetStoreId();
+	_resetStateKey();
 });
 
 const _setRoot = (root) => {
