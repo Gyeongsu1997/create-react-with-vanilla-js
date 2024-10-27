@@ -54,7 +54,7 @@ const _diff = function(oldNode, newNode) {
 
 const _setAttributes = function($el, props) {
 	$el.internalInstanceKey = generateRandomId();
-	Object.entries(props)
+	Object.entries(props || {})
 		.filter(([ attr, value ]) => value)
 		.forEach(([ attr, value ]) => {
 			if (attr.startsWith('on')) {

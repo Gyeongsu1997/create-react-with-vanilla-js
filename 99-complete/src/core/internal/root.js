@@ -34,7 +34,7 @@ const _removeEventListeners = function() {
 		});
 	}
 	eventHandlers = {};
-}
+};
 
 const _render = debounceFrame(() => {
 	if (!$root || !rootComponent) {
@@ -44,7 +44,7 @@ const _render = debounceFrame(() => {
 	const $newRoot = $root.cloneNode(false);
 	const $el = _createElement(rootComponent);
 	if ($el === null) {
-		$root.parentNode.replaceChild($root, $newRoot);
+		$root.parentNode.replaceChild($newRoot, $root);
 		$root = $newRoot;
 		return;
 	}
@@ -62,4 +62,4 @@ const _setRootComponent = (component) => {
 	rootComponent = component;
 };
 
-export { _setEvent, _render, _setRoot, _setRootComponent };
+export { _render, _setEvent, _setRoot, _setRootComponent };
