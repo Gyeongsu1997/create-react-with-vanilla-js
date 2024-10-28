@@ -2,11 +2,13 @@ const _setAttributes = function($el, props) {
 	Object.entries(props || {})
 		.filter(([ attr, value ]) => value)
 		.forEach(([ attr, value ]) => {
+			// 변경된 코드 시작
 			if (attr.startsWith('on')) {
 				$el.addEventListener(attr.slice(2).toLowerCase(), value);
 			} else {
 				$el.setAttribute(attr, value);
 			}
+			// 변경된 코드 끝
 		});
 };
 
