@@ -1,17 +1,22 @@
-import { debounceFrame } from "./utils.js";
-import { _createElement, _diff } from "./dom.js"
+import { _resetStateKey } from "./store.js";
+import { _createElement } from "./dom.js"
 
 let $root = null;
 let rootComponent = null;
 
-const _render = debounceFrame(() => {
+const _render = () => {
 	if (!$root || !rootComponent) {
 		return;
 	}
-	const newRoot = $root.cloneNode(false);
-	newRoot.appendChild(_createElement(rootComponent));
-	_diff($root, newRoot);
-});
+	const $newRoot = $root.cloneNode(false);
+	const $el = _createElement(rootComponent);
+	if ($el !== null) {
+		$newRoot.appendChild($el);
+	}
+	$root.parentNode.replaceChild($newRoot, $root);
+	$root = $newRoot;
+	_resetStateKey();
+};
 
 const _setRoot = (root) => {
 	$root = root;
