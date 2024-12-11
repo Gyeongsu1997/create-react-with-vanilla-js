@@ -1,54 +1,54 @@
 import { _setEvent } from "./root.js";
 import { generateRandomId } from "./utils.js";
 
-const _updateAttributes = function(oldNode, newNode) {
-	for (const { name, value } of [ ...newNode.attributes ]) {
-	  if (value !== oldNode.getAttribute(name)) {
-		oldNode.setAttribute(name, value);
+const _updateAttributes = function(oldChild, newChild) {
+	for (const { name, value } of [ ...newChild.attributes ]) {
+	  if (value !== oldChild.getAttribute(name)) {
+		oldChild.setAttribute(name, value);
 	  }
 	}
-	for (const { name } of [ ...oldNode.attributes ]) {
-	  if (newNode.getAttribute(name) === null) {
-		oldNode.removeAttribute(name);
+	for (const { name } of [ ...oldChild.attributes ]) {
+	  if (newChild.getAttribute(name) === null) {
+		oldChild.removeAttribute(name);
 	  }
 	}
-	oldNode.internalInstanceKey = newNode.internalInstanceKey;
+	oldChild.internalInstanceKey = newChild.internalInstanceKey;
 };
 
-const _updateElement = function(parent, newNode, oldNode) {
-	if (!newNode && oldNode) {
-		oldNode.remove();
+const _updateElement = function(parent, oldChild, newChild) {
+	if (!newChild && oldChild) {
+		oldChild.remove();
 		return;
 	}
-	if (newNode && !oldNode) {
-		parent.appendChild(newNode);
+	if (newChild && !oldChild) {
+		parent.appendChild(newChild);
 		return;
 	}
-	if (newNode instanceof Text && oldNode instanceof Text) {
-	  if (oldNode.nodeValue === newNode.nodeValue) {
+	if (newChild instanceof Text && oldChild instanceof Text) {
+	  if (oldChild.nodeValue === newChild.nodeValue) {
 		return;
 	  }
-	  oldNode.nodeValue = newNode.nodeValue
+	  oldChild.nodeValue = newChild.nodeValue
 	  return;
 	}
-	if (newNode.nodeName !== oldNode.nodeName) {
-	  const index = [ ...parent.childNodes ].indexOf(oldNode);
-	  oldNode.remove();
-	  parent.insertBefore(newNode, parent.childNodes[index]);
+	if (newChild.nodeName !== oldChild.nodeName) {
+	  const index = [ ...parent.childNodes ].indexOf(oldChild);
+	  oldChild.remove();
+	  parent.insertBefore(newChild, parent.childNodes[index]);
 	  return;
 	}
-	_updateAttributes(oldNode, newNode);
+	_updateAttributes(oldChild, newChild);
   
-	_diff(oldNode, newNode);
+	_diff(oldChild, newChild);
 };
 
 const _diff = function(oldNode, newNode) {
-	const newChildNodes = [ ...newNode.childNodes ];
 	const oldChildNodes = [ ...oldNode.childNodes ];
+	const newChildNodes = [ ...newNode.childNodes ];
 
-	const max = Math.max(newChildNodes.length, oldChildNodes.length);
+	const max = Math.max(oldChildNodes.length, newChildNodes.length);
 	for (let i = 0; i < max; i++) {
-	  _updateElement(oldNode, newChildNodes[i], oldChildNodes[i]);
+	  _updateElement(oldNode, oldChildNodes[i], newChildNodes[i]);
 	}
 };
 
