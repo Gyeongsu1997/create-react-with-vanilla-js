@@ -1,5 +1,6 @@
+import { _setEvent } from "./root.js";
+import { generateRandomId } from "./utils.js";
 const _updateAttributes = function (oldChild, newChild) {
-  // 달라진 속성을 반영한다.
   for (const {
     name,
     value
@@ -8,7 +9,6 @@ const _updateAttributes = function (oldChild, newChild) {
       oldChild.setAttribute(name, value);
     }
   }
-  // 없어진 속성을 제거한다.
   for (const {
     name
   } of [...oldChild.attributes]) {
@@ -16,19 +16,18 @@ const _updateAttributes = function (oldChild, newChild) {
       oldChild.removeAttribute(name);
     }
   }
+  // 추가된 부분
+  oldChild.eventKey = newChild.eventKey;
 };
 const _updateElement = function (parent, oldChild, newChild) {
-  // 1. 자식 노드가 삭제된 경우
   if (!newChild && oldChild) {
     oldChild.remove();
     return;
   }
-  // 2. 자식 노드가 새롭게 추가된 경우
   if (newChild && !oldChild) {
     parent.appendChild(newChild);
     return;
   }
-  // 3. 자식 노드가 텍스트 노드인 경우에는 값을 비교해서 달라진 경우에만 값을 덮어씌웁니다.
   if (newChild instanceof Text && oldChild instanceof Text) {
     if (oldChild.nodeValue === newChild.nodeValue) {
       return;
@@ -36,14 +35,12 @@ const _updateElement = function (parent, oldChild, newChild) {
     oldChild.nodeValue = newChild.nodeValue;
     return;
   }
-  // 4. 기존 자식 노드와 새 자식 노드의 태그 이름이 다른 경우에는 속성을 비교할 필요 없이 대체합니다.
   if (newChild.nodeName !== oldChild.nodeName) {
     const index = [...parent.childNodes].indexOf(oldChild);
     oldChild.remove();
     parent.insertBefore(newChild, parent.childNodes[index]);
     return;
   }
-  // 5. 자식 노드의 태그 이름이 서로 같은 경우 속성을 비교해 달라진 속성만을 반영합니다.
   _updateAttributes(oldChild, newChild);
   _diff(oldChild, newChild);
 };
@@ -56,9 +53,11 @@ const _diff = function (oldNode, newNode) {
   }
 };
 const _setAttributes = function ($el, props) {
+  $el.eventKey = generateRandomId(); // 추가된 부분
   Object.entries(props || {}).filter(([attr, value]) => value).forEach(([attr, value]) => {
     if (attr.startsWith('on')) {
-      $el.addEventListener(attr.slice(2).toLowerCase(), value);
+      // 달라진 부분
+      _setEvent(attr.slice(2).toLowerCase(), $el.eventKey, value);
     } else {
       $el.setAttribute(attr, value);
     }

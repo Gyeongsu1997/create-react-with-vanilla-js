@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "babel src --out-dir static/js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.8",
+    "@babel/core": "^7.25.2",
+    "@babel/plugin-transform-react-jsx": "^7.25.2"
+  }
+}

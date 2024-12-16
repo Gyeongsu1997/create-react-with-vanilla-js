@@ -10,13 +10,13 @@ const _setEvent = function(eventType, eventKey, callback) {
 	if (!eventListeners[eventType]) {
 		eventListeners[eventType] = [];
 	}
-	const listener = event => {
+	const eventListener = (event) => {
 		if (event.target.eventKey !== eventKey) {
 			return;
 		}
 		callback(event);
 	};
-	eventListeners[eventType].push(listener);
+	eventListeners[eventType].push(eventListener);
 };
 
 const _addEventListeners = function() {
@@ -40,7 +40,7 @@ const _render = debounceFrame(() => {
 	if (!$root || !rootComponent) {
 		return;
 	}
-	_removeEventListeners();
+	_removeEventListeners(); // 기존에 등록된 이벤트 리스너 제거
 	const $newRoot = $root.cloneNode(false);
 	const $el = _createElement(rootComponent);
 	if ($el === null) {
@@ -50,7 +50,7 @@ const _render = debounceFrame(() => {
 	}
 	$newRoot.appendChild($el);
 	_diff($root, $newRoot);
-	_addEventListeners();
+	_addEventListeners(); // 새로운 이벤트 리스너 등록
 	_resetStateKey();
 });
 
