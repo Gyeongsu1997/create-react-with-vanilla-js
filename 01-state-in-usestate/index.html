@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<div id="root"></div>
+	<script>
+		const useState = function(initialState) {
+			let state = initialState;
+			const setState = (newState) => {
+				if (newState === state) {
+					return;
+				}
+				if (JSON.stringify(newState) === JSON.stringify(state)) {
+					return;
+				}
+				state = newState;
+				render();
+			};
+			return [ state, setState ];
+		};
+
+		function App() {
+			const [count, setCount] = useState(0);
+
+			// window 전역 객체에 함수로 등록
+			window.onIncrease = () => {
+				setCount(count + 1);
+			};
+
+			window.onDecrease = () => {
+				setCount(count - 1);
+			};
+
+			return `
+				<div>
+					<p>count: <span>${count}</span></p>
+					<button onClick="onIncrease()">+1</button>
+					<button onClick="onDecrease()">-1</button>
+				</div>
+			`;
+		};
+
+        let renderCount = 0;
+		const render = () => {
+			const root = document.getElementById('root');
+			root.innerHTML = App();
+			console.log(++renderCount);
+		};
+
+		render();
+	</script>
+</body>
+</html>
