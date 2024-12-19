@@ -1,1 +1,1 @@
-https://gyeongsu1997.github.io/
+[바닐라 자바스크립트로 리액트 만들기 - 함수형 컴포넌트](https://gyeongsu1997.github.io/vanillajs/function-components/)
