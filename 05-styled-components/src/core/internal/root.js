@@ -40,7 +40,7 @@ const _render = debounceFrame(() => {
 	if (!$root || !rootComponent) {
 		return;
 	}
-	_removeEventListeners(); // 기존에 등록된 이벤트 리스너 제거
+	_removeEventListeners();
 	const $newRoot = $root.cloneNode(false);
 	const $el = _createElement(rootComponent);
 	if ($el === null) {
@@ -50,7 +50,7 @@ const _render = debounceFrame(() => {
 	}
 	$newRoot.appendChild($el);
 	_diff($root, $newRoot);
-	_addEventListeners(); // 새로운 이벤트 리스너 등록
+	_addEventListeners();
 	_resetStateKey();
 });
 
