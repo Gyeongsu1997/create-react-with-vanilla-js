@@ -1,1 +1,1 @@
-https://gyeongsu1997.github.io/
+[바닐라 자바스크립트로 리액트 만들기 - 이벤트 위임](https://gyeongsu1997.github.io/vanillajs/event-delegation/)
