@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<div id="root"></div>
+	<script>
+		// 외부에 존재하는 상태의 배열
+		const states = [];
+		let currentStateKey = 0;
+
+		const useState = function(initialState) {
+            		const key = currentStateKey;
+			// key가 states.length보다 작을 때는
+			// states 배열에 상태를 넣지 않습니다.
+			if (key === states.length) {
+				states.push(initialState);
+			}
+			const state = states[key];
+			const setState = (newState) => {
+				if (newState === state) {
+					return;
+				}
+				if (JSON.stringify(newState) === JSON.stringify(state)) {
+					return;
+				}
+                		// 클로저를 이용해 기존 위치에 새로운 상태를 넣습니다.
+				states[key] = newState;
+				render();
+			};
+			currentStateKey++;
+			return [ state, setState ];
+		};
+
+		function App() {
+			const [count, setCount] = useState(0);
+
+			// window 전역 객체에 함수로 등록
+			window.onIncrease = () => {
+				setCount(count + 1);
+			};
+
+			window.onDecrease = () => {
+				setCount(count - 1);
+			};
+
+			return `
+				<div>
+					<p>count: <span>${count}</span></p>
+					<button onClick="onIncrease()">+1</button>
+					<button onClick="onDecrease()">-1</button>
+				</div>
+			`;
+		};
+
+		const render = () => {
+			const root = document.getElementById('root');
+			root.innerHTML = App();
+			currentStateKey = 0; // 초기화
+		};
+
+		render();
+	</script>
+</body>
+</html>
