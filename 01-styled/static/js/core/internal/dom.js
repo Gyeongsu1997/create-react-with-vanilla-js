@@ -16,7 +16,6 @@ const _updateAttributes = function (oldChild, newChild) {
       oldChild.removeAttribute(name);
     }
   }
-  // 추가된 부분
   oldChild.eventKey = newChild.eventKey;
 };
 const _updateElement = function (parent, oldChild, newChild) {
@@ -53,10 +52,9 @@ const _diff = function (oldNode, newNode) {
   }
 };
 const _setAttributes = function ($el, props) {
-  $el.eventKey = generateRandomId(); // 추가된 부분
+  $el.eventKey = generateRandomId();
   Object.entries(props || {}).filter(([attr, value]) => value).forEach(([attr, value]) => {
     if (attr.startsWith('on')) {
-      // 달라진 부분
       _setEvent(attr.slice(2).toLowerCase(), $el.eventKey, value);
     } else {
       $el.setAttribute(attr, value);
