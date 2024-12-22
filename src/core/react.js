@@ -8,26 +8,6 @@ import {
 } from "./internal/store.js";
 import { _render } from "./internal/root.js";
 
-const useEffect = function (callback, dependencies) {
-  const storeId = _getCurrentStateKey();
-  const oldDependencies = _getCurrentState();
-
-  let hasChanged = true;
-  if (oldDependencies) {
-    hasChanged = dependencies.some((dep, i) => {
-      if (dep !== oldDependencies[i]) {
-        return true;
-      }
-    });
-  }
-
-  if (hasChanged) {
-    callback();
-    _setState(storeId, dependencies);
-  }
-  _increaseStateKey();
-};
-
 const useReducer = function (reducer, initialState) {
   _setCurrentState(_createStore(reducer, initialState));
   const state = _getCurrentState();
@@ -60,5 +40,5 @@ const React = {
   },
 };
 
-export { useEffect, useReducer, useState };
+export { useReducer, useState };
 export default React;
