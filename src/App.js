@@ -54,7 +54,6 @@ function reducer(state, action) {
       };
     default: {
       return state;
-      throw Error("Unknown action: " + action.type);
     }
   }
 }
@@ -105,6 +104,8 @@ function App() {
   return (
     <div>
       <h1>TO DO LIST</h1>
+      <div>완료: {tasks.filter(task => task.done).length} / 전체: {tasks.length}</div>
+      <br />
       <button onClick={() => setOpen(!open)}>추가</button>
       {open && (
         <AddTask

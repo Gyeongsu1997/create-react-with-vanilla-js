@@ -100,7 +100,7 @@ function App() {
       id
     });
   };
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "TO DO LIST"), /*#__PURE__*/React.createElement("button", {
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "TO DO LIST"), /*#__PURE__*/React.createElement("div", null, "\uC644\uB8CC: ", tasks.filter(task => task.done).length, " / \uC804\uCCB4: ", tasks.length), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("button", {
     onClick: () => setOpen(!open)
   }, "\uCD94\uAC00"), open && /*#__PURE__*/React.createElement(AddTask, {
     title: title,
