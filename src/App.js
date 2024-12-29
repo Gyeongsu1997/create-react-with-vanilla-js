@@ -1,52 +1,123 @@
 /** @jsx React.createElement */
-import React from "./core/react.js";
-import Header from "./components/Header.js"
-import ArticleList from "./components/ArticleList.js";
+import React, { useReducer, useState } from "./core/react.js";
+import AddTask from "./components/AddTask.js";
+import TaskList from "./components/TaskList.js";
 
-const articles = [
-	{
-		title: "첫사랑",
-		author: "이윤학",
-		content: `
-		그대가 꺾어준 꽃
-		시들 때 까지 들여다 보았네
-		그대가 남기고 간 시든 꽃
-		다시 필 때까지`
-	},
-	{
-		title: "호수",
-		author: "정지용",
-		content: `
-		얼굴 하나야
-		손가락 둘로
-		푹 가리지만
-		
-		보고싶은 마음
-		호수만 하니눈
-		감을 수 밖에`
-	},
-	{
-		title: "풀꽃",
-		author: "나태주",
-		content: `
-		자세히 보아야 예쁘다
-		오래 보아야 사랑스럽다
-		너도 그렇다
-		`
-	}
-];
+let nextId = 2;
+const initialState = {
+  inputs: {
+    title: '',
+    content: ''
+  },
+  tasks: [
+    {
+      id: 0,
+      title: '블로그 포스팅',
+      content: '* useReducer\n* 리액트 라우터',
+      done: true,
+    },
+    {
+      id: 1,
+      title: 'CS 공부하기',
+      content: '* 컴퓨터 구조\n* 운영체제',
+      done: false,
+    }
+  ]
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'CHANGE_INPUT':
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          [action.name]: action.value
+        }
+      };
+    case 'ADD_TASK':
+      return {
+        inputs: initialState.inputs,
+        tasks: [action.task, ...state.tasks]
+      };
+    case 'TOGGLE_TASK':
+      return {
+        ...state,
+        tasks: state.tasks.map(task =>
+          task.id === action.id ? { ...task, done: !task.done } : task
+        )
+      };
+    case 'REMOVE_TASK':
+      return {
+        ...state,
+        tasks: state.tasks.filter(task => task.id !== action.id)
+      };
+    default: {
+      return state;
+      throw Error("Unknown action: " + action.type);
+    }
+  }
+}
 
 function App() {
-	return (
-		<div>
-			<Header>
-				<h1 class="text-center">
-					아름다운 한국의 명시
-				</h1>
-			</Header>
-			<ArticleList articles={articles} />
-		</div>
-	);
-};
+  const [open, setOpen] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const { tasks } = state;
+  const { title, content } = state.inputs;
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    dispatch({
+      type: 'CHANGE_INPUT',
+      name,
+      value
+    });
+  };
+
+  const onAdd = () => {
+    dispatch({
+      type: 'ADD_TASK',
+      task: {
+        id: nextId++,
+        title,
+        content,
+        done: false
+      }
+    });
+    setOpen(false);
+  };
+
+  const onToggle = (id) => {
+    dispatch({
+      type: 'TOGGLE_TASK',
+      id
+    });
+  };
+
+  const onRemove = (id) => {
+    dispatch({
+      type: 'REMOVE_TASK',
+      id
+    });
+  };
+
+  return (
+    <div>
+      <h1>TO DO LIST</h1>
+      <button onClick={() => setOpen(!open)}>추가</button>
+      {open && (
+        <AddTask
+          title={title}
+          content={content}
+          onChange={onChange}
+          onAdd={onAdd}
+          onCancel={() => setOpen(false)}
+        />
+      )}
+      <TaskList tasks={tasks} onToggle={onToggle} onRemove={onRemove} />
+    </div>
+  );
+}
 
 export default App;
